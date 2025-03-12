@@ -14,6 +14,8 @@ actor ImageProcessor {
             return nil
         }
         
+        let lowThreshold = 10
+        let highThreshold = 245
         let imageSize = (width: cgImage.width, height: cgImage.height)
         var mazeArray = Array(repeating: Array(repeating: 1, count: imageSize.width), count: imageSize.height)
         var endPixels: [Point] = []
@@ -35,15 +37,15 @@ actor ImageProcessor {
                 let colors: (red: UInt8, green: UInt8, blue: UInt8) = (pixelData[pixelIndex], pixelData[pixelIndex + 1], pixelData[pixelIndex + 2])
                 
                 // If black, set the entry in the array to 1, otherwise 0
-                if colors.red < 10 && colors.green < 10 && colors.blue < 10 {
+                if colors.red < lowThreshold && colors.green < lowThreshold && colors.blue < lowThreshold {
                     mazeArray[yIndex][xIndex] = 1
                 } else {
                     mazeArray[yIndex][xIndex] = 0
                     
                     // Collect all blue/start and red/end pixels
-                    if colors.red < 100 && colors.green < 100 && colors.blue > 245 {
+                    if colors.red < lowThreshold && colors.green < lowThreshold && colors.blue > highThreshold {
                         startPixels.append(Point(x: xIndex, y: yIndex))
-                    } else if colors.red > 245 && colors.green < 10 && colors.blue < 10 {
+                    } else if colors.red > highThreshold && colors.green < lowThreshold && colors.blue < lowThreshold {
                         endPixels.append(Point(x: xIndex, y: yIndex))
                     }
                 }
