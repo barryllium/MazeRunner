@@ -7,10 +7,12 @@
 
 import Foundation
 
-struct Maze: Codable {
+struct Maze: Codable, Identifiable {
+    var id = UUID().uuidString
     var name: String
     var description: String
     var urlString: String
+    var imageData: Data?
     
     enum CodingKeys: String, CodingKey {
         case name
