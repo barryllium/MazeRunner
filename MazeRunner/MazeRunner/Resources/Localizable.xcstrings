@@ -41,6 +41,16 @@
         }
       }
     },
+    "no_network_connection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Network Connection"
+          }
+        }
+      }
+    },
     "ok" : {
       "localizations" : {
         "en" : {
