@@ -11,6 +11,7 @@ import UIKit
 @Observable
 class MazeViewModel {
     var apiClient: APIClientProtocol = APIClient.default
+    var imageProcessor = ImageProcessor()
     
     var isLoading = false
     var mazes: [Maze] = []
@@ -66,6 +67,22 @@ class MazeViewModel {
     func setSelectedMaze(_ maze: Maze) {
         solvedMazeImage = nil
         selectedMaze = maze
+    }
+    
+    func solveMaze() async {
+        if let imageGrid = await createImageGrid() {
+            print("Image grid resolved")
+        } else {
+            print("Image grid creation failed")
+        }
+    }
+    
+    private func createImageGrid() async -> ImageGrid? {
+        guard let image = selectedMaze?.image else {
+            return nil
+        }
+        
+        return await imageProcessor.createGridFromImage(image)
     }
 }
 

@@ -95,7 +95,7 @@ final class MazeRunnerTests: XCTestCase {
         let mazes = Bundle.main.decode(MazeList.self, from: .mazes)
         viewModel.mazes = mazes.list
         viewModel.selectedMaze = mazes.list[1]
-        viewModel.solvedMazeImage = UIImage(named: "maze1")!
+        viewModel.solvedMazeImage = UIImage(named: "testMaze")!
         
         viewModel.setSelectedMaze(mazes.list[0])
         

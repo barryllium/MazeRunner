@@ -52,6 +52,9 @@ struct MazeDetailView: View {
                 ProgressView()
             }
             .font(.headline)
+            .task {
+                await mazeViewModel.solveMaze()
+            }
         }
     }
 }
