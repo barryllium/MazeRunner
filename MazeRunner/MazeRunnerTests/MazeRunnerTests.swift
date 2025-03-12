@@ -9,8 +9,13 @@ import XCTest
 @testable import MazeRunner
 
 final class MazeRunnerTests: XCTestCase {
+    var viewModel: MazeViewModel!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        
+        viewModel = MazeViewModel()
+        viewModel.apiClient = MockAPIClient()
     }
 
     override func tearDownWithError() throws {
@@ -34,5 +39,14 @@ final class MazeRunnerTests: XCTestCase {
         var maze = mazes!.list[0]
         maze.urlString = ""
         XCTAssertNil(maze.url)
+    }
+    
+    func testFetchMazeData() async {
+        await viewModel.fetchMazes()
+        
+        XCTAssertEqual(viewModel.mazes.count, 3)
+        XCTAssertEqual(viewModel.mazes[0].name, "Maze 1")
+        XCTAssertEqual(viewModel.mazes[0].description, "Simple square maze")
+        XCTAssertEqual(viewModel.mazes[0].urlString, "https://downloads-secured.bluebeam.com/homework/maze1.png")
     }
 }

@@ -26,4 +26,8 @@ struct Maze: Codable {
 struct MazeList: Codable {
     var list: [Maze]
     var count: Int
+    
+    static var fetchUrl: URL? {
+        URL(string: "https://downloads-secured.bluebeam.com/homework/mazes")
+    }
 }
