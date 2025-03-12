@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Maze: Codable, Identifiable {
     var id = UUID().uuidString
@@ -22,6 +23,13 @@ struct Maze: Codable, Identifiable {
     
     var url: URL? {
         URL(string: urlString)
+    }
+    
+    var image: UIImage? {
+        if let imageData {
+            return UIImage(data: imageData)
+        }
+        return nil
     }
 }
 

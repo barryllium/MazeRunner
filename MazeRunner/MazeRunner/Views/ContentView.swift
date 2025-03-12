@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var viewModel = MazeViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(viewModel.mazes) { maze in
+                MazeRowView(maze: maze)
+            }
+            .navigationBarTitle("Maze Runner")
+            .refreshable {
+                await viewModel.fetchMazes()
+            }
+            .task {
+                await viewModel.fetchMazes()
+            }
         }
-        .padding()
     }
 }
 
