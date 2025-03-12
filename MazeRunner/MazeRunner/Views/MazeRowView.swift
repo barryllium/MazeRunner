@@ -23,6 +23,8 @@ struct MazeRowView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200, alignment: .leading)
+            } else {
+                ProgressView()
             }
         }
     }

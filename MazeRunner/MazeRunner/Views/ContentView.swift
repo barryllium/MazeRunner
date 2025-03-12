@@ -8,19 +8,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var viewModel = MazeViewModel()
+    @State private var mazeViewModel = MazeViewModel()
+    @State private var navigationPath: [Maze] = []
+    
+    @State private var isShowingLoadError = false
+    @State private var imageLoadErrorMazeName: String = ""
+    @State private var isShowingImageLoadError = false
     
     var body: some View {
-        NavigationStack {
-            List(viewModel.mazes) { maze in
-                MazeRowView(maze: maze)
+        NavigationStack(path: $navigationPath) {
+            List(mazeViewModel.mazes) { maze in
+                Button {
+                    mazeViewModel.selectedMaze = maze
+                    navigationPath.append(maze)
+                } label: {
+                    MazeRowView(maze: maze)
+                }
             }
-            .navigationBarTitle("Maze Runner")
+            .navigationBarTitle("maze_runner")
+            .navigationDestination(for: Maze.self, destination: { _ in
+                MazeDetailView(mazeViewModel: mazeViewModel)
+            })
             .refreshable {
-                await viewModel.fetchMazes()
+                await mazeViewModel.fetchMazes()
             }
             .task {
-                await viewModel.fetchMazes()
+                await mazeViewModel.fetchMazes()
+            }
+            .alert(isPresented: $mazeViewModel.isShowingErrorAlert) {
+                Alert(title: Text("error"),
+                      message: Text(mazeViewModel.imageLoadErrorMazeName == nil ? "load_error_description" : "image_error_description \(mazeViewModel.imageLoadErrorMazeName ?? "")"),
+                      dismissButton: .default(Text("ok")))
             }
         }
     }

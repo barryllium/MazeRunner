@@ -11,12 +11,21 @@ import Foundation
 class MazeViewModel {
     var apiClient: APIClientProtocol = APIClient.default
     
+    var isLoading = false
     var mazes: [Maze] = []
+    var selectedMaze: Maze?
+    
+    var isShowingErrorAlert = false
+    var imageLoadErrorMazeName: String? = nil
     
     func fetchMazes() async {
         guard let url = MazeList.fetchUrl else {
             return
         }
+        
+        isLoading = true
+        
+        defer { isLoading = false }
         
         let request = AsyncURLRequest<MazeList>(url: url)
         
@@ -27,12 +36,13 @@ class MazeViewModel {
                 await fetchMazeImage(maze: maze)
             }
         } catch {
-            // TODO: Show error
+            showErrorAlert(type: .loadMazesError)
         }
     }
     
     func fetchMazeImage(maze: Maze) async {
         guard let url = maze.url else {
+            showErrorAlert(type: .loadMazeImageError, mazeName: maze.name)
             return
         }
         
@@ -42,7 +52,17 @@ class MazeViewModel {
                 mazes[index].imageData = data
             }
         } catch {
-            // TODO: Show error
+            showErrorAlert(type: .loadMazeImageError, mazeName: maze.name)
         }
     }
+    
+    func showErrorAlert(type: LoadError, mazeName: String? = nil) {
+        imageLoadErrorMazeName = mazeName
+        isShowingErrorAlert = true
+    }
+}
+
+enum LoadError {
+    case loadMazesError
+    case loadMazeImageError
 }

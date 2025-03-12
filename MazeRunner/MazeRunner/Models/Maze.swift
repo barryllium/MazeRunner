@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Maze: Codable, Identifiable {
+struct Maze: Codable, Identifiable, Hashable {
     var id = UUID().uuidString
     var name: String
     var description: String

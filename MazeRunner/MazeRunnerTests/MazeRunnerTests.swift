@@ -46,6 +46,14 @@ final class MazeRunnerTests: XCTestCase {
         XCTAssertEqual(viewModel.mazes[0].urlString, "https://downloads-secured.bluebeam.com/homework/maze1.png")
     }
     
+    func testShowMazesLoadError() async {
+        viewModel.apiClient = MockAPIClient(showError: true)
+        await viewModel.fetchMazes()
+        
+        XCTAssertEqual(viewModel.isShowingErrorAlert, true)
+        XCTAssertNil(viewModel.imageLoadErrorMazeName)
+    }
+    
     func testFetchMazeImageData() async {
         let mazes = Bundle.main.decode(MazeList.self, from: .mazes)
         viewModel.mazes = mazes.list
@@ -55,5 +63,31 @@ final class MazeRunnerTests: XCTestCase {
         
         XCTAssertNotNil(viewModel.mazes[0].imageData)
         XCTAssertEqual(String(data: viewModel.mazes[0].imageData!, encoding: .utf8), MockAPIClient.testDataString)
+    }
+    
+    func testFetchMazeImageDataNoUrl() async {
+        let mazes = Bundle.main.decode(MazeList.self, from: .mazes)
+        viewModel.mazes = mazes.list
+        viewModel.mazes[0].urlString = ""
+        let mazeName = viewModel.mazes[0].name
+        
+        await viewModel.fetchMazeImage(maze: viewModel.mazes[0])
+        
+        XCTAssertNil(viewModel.mazes[0].imageData)
+        XCTAssertNil(viewModel.mazes[0].image)
+        XCTAssertEqual(viewModel.isShowingErrorAlert, true)
+        XCTAssertEqual(viewModel.imageLoadErrorMazeName, mazeName)
+    }
+    
+    func testShowMazeImageLoadError() async {
+        let mazeName = "Maze 1"
+        let mazes = Bundle.main.decode(MazeList.self, from: .mazes)
+        viewModel.mazes = mazes.list
+        viewModel.apiClient = MockAPIClient(showError: true)
+        
+        await viewModel.fetchMazeImage(maze: viewModel.mazes[0])
+        
+        XCTAssertEqual(viewModel.isShowingErrorAlert, true)
+        XCTAssertEqual(viewModel.imageLoadErrorMazeName, mazeName)
     }
 }
