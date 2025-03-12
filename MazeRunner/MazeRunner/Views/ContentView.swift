@@ -25,7 +25,7 @@ struct ContentView: View {
             NavigationStack(path: $navigationPath) {
                 List(mazeViewModel.mazes) { maze in
                     Button {
-                        mazeViewModel.selectedMaze = maze
+                        mazeViewModel.setSelectedMaze(maze)
                         navigationPath.append(maze)
                     } label: {
                         MazeRowView(maze: maze)

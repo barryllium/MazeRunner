@@ -37,11 +37,21 @@
 			);
 			target = F141AEA92D81BA0F00011E3B /* MazeRunner */;
 		};
+		F1897EF12D81ECE200417B37 /* Exceptions for "MazeRunner" folder in "MazeRunnerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Assets.xcassets,
+			);
+			target = F141AEB92D81BA0F00011E3B /* MazeRunnerTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F141AEAC2D81BA0F00011E3B /* MazeRunner */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F1897EF12D81ECE200417B37 /* Exceptions for "MazeRunner" folder in "MazeRunnerTests" target */,
+			);
 			path = MazeRunner;
 			sourceTree = "<group>";
 		};

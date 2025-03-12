@@ -60,6 +60,16 @@
           }
         }
       }
+    },
+    "solving_maze" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solving Maze"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

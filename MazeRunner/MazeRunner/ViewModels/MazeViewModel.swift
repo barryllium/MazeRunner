@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 @Observable
 class MazeViewModel {
@@ -14,6 +15,7 @@ class MazeViewModel {
     var isLoading = false
     var mazes: [Maze] = []
     var selectedMaze: Maze?
+    var solvedMazeImage: UIImage?
     
     var isShowingErrorAlert = false
     var imageLoadErrorMazeName: String? = nil
@@ -59,6 +61,11 @@ class MazeViewModel {
     func showErrorAlert(type: LoadError, mazeName: String? = nil) {
         imageLoadErrorMazeName = mazeName
         isShowingErrorAlert = true
+    }
+    
+    func setSelectedMaze(_ maze: Maze) {
+        solvedMazeImage = nil
+        selectedMaze = maze
     }
 }
 

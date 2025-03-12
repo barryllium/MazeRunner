@@ -90,4 +90,16 @@ final class MazeRunnerTests: XCTestCase {
         XCTAssertEqual(viewModel.isShowingErrorAlert, true)
         XCTAssertEqual(viewModel.imageLoadErrorMazeName, mazeName)
     }
+    
+    func testSetSelectedMaze() {
+        let mazes = Bundle.main.decode(MazeList.self, from: .mazes)
+        viewModel.mazes = mazes.list
+        viewModel.selectedMaze = mazes.list[1]
+        viewModel.solvedMazeImage = UIImage(named: "maze1")!
+        
+        viewModel.setSelectedMaze(mazes.list[0])
+        
+        XCTAssertNil(viewModel.solvedMazeImage)
+        XCTAssertEqual(viewModel.selectedMaze, viewModel.mazes[0])
+    }
 }
