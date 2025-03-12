@@ -1,0 +1,20 @@
+{
+    "list": [
+        {
+            "name": "Maze 1",
+            "description": "Simple square maze",
+            "url": "https://downloads-secured.bluebeam.com/homework/maze1.png"
+        },
+        {
+            "name": "Maze 2",
+            "description": "Huge square maze",
+            "url": "https://downloads-secured.bluebeam.com/homework/maze2.png"
+        },
+        {
+            "name": "Maze 1",
+            "description": "Circle maze",
+            "url": "https://downloads-secured.bluebeam.com/homework/maze3.png"
+        }
+    ],
+    "count": 3
+}
