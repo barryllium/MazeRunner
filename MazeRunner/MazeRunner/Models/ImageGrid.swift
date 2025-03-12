@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ImageGrid {
+struct ImageGrid: Codable {
     let grid: [[Int]]
     let startPoint: Point
     let endPoint: Point

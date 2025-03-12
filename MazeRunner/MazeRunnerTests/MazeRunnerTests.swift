@@ -101,5 +101,6 @@ final class MazeRunnerTests: XCTestCase {
         
         XCTAssertNil(viewModel.solvedMazeImage)
         XCTAssertEqual(viewModel.selectedMaze, viewModel.mazes[0])
+        XCTAssertEqual(viewModel.imageGenerationStep, .initializing)
     }
 }

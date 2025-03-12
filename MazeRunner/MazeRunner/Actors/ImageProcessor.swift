@@ -8,6 +8,7 @@
 import UIKit
 
 actor ImageProcessor {
+    // MARK: - Image Grid Creation
     func createGridFromImage(_ image: UIImage) -> ImageGrid? {
         // Need to make sure we can create a cgImage from the uiImage
         guard let cgImage = image.cgImage else {
@@ -71,5 +72,54 @@ actor ImageProcessor {
         // floor value of the average
         return Point(x: points.reduce(0, { $0 + $1.x }) / points.count,
                      y: points.reduce(0, { $0 + $1.y }) / points.count)
+    }
+    
+    // MARK: - Path Finding
+    func findPathFromImageGrid(_ imageGrid: ImageGrid) -> [Point]? {
+        // Array of adjacent points from any point
+        let directions = [Point(x: 0, y: 1),
+                          Point(x: 1, y: 0),
+                          Point(x: 0, y: -1),
+                          Point(x: -1, y: 0)]
+        
+        // Create a pathQueue that keeps track of all current points to check
+        var queue = [PathNode(point: imageGrid.startPoint,
+                                  fullPath: [imageGrid.startPoint])]
+        // Track all visited nodes so we don't double back
+        var visitedNodes: Set<Point> = [imageGrid.startPoint]
+        
+        while !queue.isEmpty {
+            // Grab the current node
+            let currentNode = queue.removeFirst()
+            
+            // Check if the current point is the end point, if so, return the path
+            if currentNode.point.x == imageGrid.endPoint.x,
+               currentNode.point.y == imageGrid.endPoint.y {
+                return currentNode.fullPath
+            }
+            
+            // Check adjacent nodes
+            for direction in directions {
+                let adjacentNode = Point(x: currentNode.point.x + direction.x,
+                                         y: currentNode.point.y + direction.y)
+                
+                /* Need to assure that the adjacent node has not previously
+                 been checked, is within the bounds of the imageGrid, and
+                 is not a wall */
+                if !visitedNodes.contains(adjacentNode),
+                   adjacentNode.x >= 0,
+                   adjacentNode.y >= 0,
+                   adjacentNode.x < imageGrid.grid[0].count,
+                   adjacentNode.y < imageGrid.grid.count,
+                   imageGrid.grid[adjacentNode.y][adjacentNode.x] == 0 {
+                    visitedNodes.insert(adjacentNode)
+                    queue.append(PathNode(point: adjacentNode,
+                                              fullPath: currentNode.fullPath + [adjacentNode]))
+                }
+            }
+        }
+        
+        // No solution was found, return nil
+        return nil
     }
 }

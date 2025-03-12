@@ -49,7 +49,14 @@ struct MazeDetailView: View {
         } else {
             VStack(alignment: .center, spacing: 8) {
                 Text("solving_maze")
-                ProgressView()
+                
+                HStack(alignment: .center, spacing: 8) {
+                    if !mazeViewModel.imageGenerationStep.isError {
+                        ProgressView()
+                    }
+                    
+                    Text(mazeViewModel.imageGenerationStep.label)
+                }
             }
             .font(.headline)
             .task {

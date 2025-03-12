@@ -16,11 +16,20 @@ class MazeViewModel {
     var isLoading = false
     var mazes: [Maze] = []
     var selectedMaze: Maze?
-    var solvedMazeImage: UIImage?
     
     var isShowingErrorAlert = false
     var imageLoadErrorMazeName: String? = nil
     
+    var imageGenerationStep: ImageGenerationStep = .initializing
+    var solvedMazeImage: UIImage?
+    
+    func setSelectedMaze(_ maze: Maze) {
+        solvedMazeImage = nil
+        selectedMaze = maze
+        imageGenerationStep = .initializing
+    }
+    
+    // MARK: - Fetch network data
     func fetchMazes() async {
         guard let url = MazeList.fetchUrl else {
             return
@@ -59,21 +68,25 @@ class MazeViewModel {
         }
     }
     
+    // MARK: - Error messaging
     func showErrorAlert(type: LoadError, mazeName: String? = nil) {
         imageLoadErrorMazeName = mazeName
         isShowingErrorAlert = true
     }
     
-    func setSelectedMaze(_ maze: Maze) {
-        solvedMazeImage = nil
-        selectedMaze = maze
-    }
-    
+    // MARK: - Maze Solving
     func solveMaze() async {
+        imageGenerationStep = .generatingImage
         if let imageGrid = await createImageGrid() {
-            print("Image grid resolved")
+            imageGenerationStep = .pathFinding
+            if let path = await findMazePath(imageGrid: imageGrid) {
+                imageGenerationStep = .generatingImage
+            } else {
+                imageGenerationStep = .errored(error: "path_finding_failed")
+            }
         } else {
-            print("Image grid creation failed")
+            imageGenerationStep = .errored(error: "image_grid_failed")
+            
         }
     }
     
@@ -83,6 +96,10 @@ class MazeViewModel {
         }
         
         return await imageProcessor.createGridFromImage(image)
+    }
+    
+    private func findMazePath(imageGrid: ImageGrid) async -> [Point]? {
+        return await imageProcessor.findPathFromImageGrid(imageGrid)
     }
 }
 

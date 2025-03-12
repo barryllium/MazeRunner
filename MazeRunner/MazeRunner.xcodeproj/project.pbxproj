@@ -33,7 +33,9 @@
 		F141AEEA2D81BC9F00011E3B /* Exceptions for "MazeRunnerTests" folder in "MazeRunner" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				JSON/grid.json,
 				JSON/mazes.json,
+				JSON/path.json,
 			);
 			target = F141AEA92D81BA0F00011E3B /* MazeRunner */;
 		};

@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "complete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete!"
+          }
+        }
+      }
+    },
     "error" : {
       "localizations" : {
         "en" : {
@@ -11,12 +21,52 @@
         }
       }
     },
+    "generating_image" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generating Final Image…"
+          }
+        }
+      }
+    },
+    "generating_image_grid" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generating Image Grid…"
+          }
+        }
+      }
+    },
     "image_error_description %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "There was an error loading the image for %@, please try again."
+          }
+        }
+      }
+    },
+    "image_grid_failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate image grid"
+          }
+        }
+      }
+    },
+    "initializing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Initializing…"
           }
         }
       }
@@ -57,6 +107,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "path_finding" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Path Finding…"
+          }
+        }
+      }
+    },
+    "path_finding_failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to generate a path through the maze"
           }
         }
       }

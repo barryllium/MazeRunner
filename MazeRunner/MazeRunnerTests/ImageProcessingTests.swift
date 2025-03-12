@@ -22,15 +22,55 @@ final class ImageProcessingTests: XCTestCase {
     func testGridFromImage() async {
         let image = UIImage(named: "testMaze")!
         
-        let ImageGrid = await imageProcessor.createGridFromImage(image)
+        let imageGrid = await imageProcessor.createGridFromImage(image)
         
-        XCTAssertNotNil(ImageGrid)
-        XCTAssertEqual(ImageGrid!.grid.count, 20)
-        XCTAssertEqual(ImageGrid!.grid[0].count, 20)
-        XCTAssertEqual(ImageGrid!.startPoint.x, 1)
-        XCTAssertEqual(ImageGrid!.startPoint.y, 1)
-        XCTAssertEqual(ImageGrid!.endPoint.x, 17)
-        XCTAssertEqual(ImageGrid!.endPoint.y, 17)
+        XCTAssertNotNil(imageGrid)
+        XCTAssertEqual(imageGrid!.grid.count, 20)
+        XCTAssertEqual(imageGrid!.grid[0].count, 20)
+        XCTAssertEqual(imageGrid!.startPoint.x, 1)
+        XCTAssertEqual(imageGrid!.startPoint.y, 1)
+        XCTAssertEqual(imageGrid!.endPoint.x, 17)
+        XCTAssertEqual(imageGrid!.endPoint.y, 17)
+    }
+    
+    func testGridShouldFailNoStartPoints() async {
+        let image = UIImage(named: "testMazeNoStart")!
+        
+        let imageGrid = await imageProcessor.createGridFromImage(image)
+        
+        XCTAssertNil(imageGrid)
+    }
+    
+    func testGridShouldFailNoEndPoints() async {
+        let image = UIImage(named: "testMazeNoEnd")!
+        
+        let imageGrid = await imageProcessor.createGridFromImage(image)
+        
+        XCTAssertNil(imageGrid)
+    }
+    
+    func testPathFindingFromGrid() async {
+        let imageGrid = Bundle.main.decode(ImageGrid.self, from: .grid)
+        
+        let path = await imageProcessor.findPathFromImageGrid(imageGrid)
+        
+        XCTAssertNotNil(path)
+        XCTAssertEqual(path!.count, 89)
+        XCTAssertEqual(path![0].x, imageGrid.startPoint.x)
+        XCTAssertEqual(path![0].y, imageGrid.startPoint.y)
+        XCTAssertEqual(path![88].x, imageGrid.endPoint.x)
+        XCTAssertEqual(path![88].y, imageGrid.endPoint.y)
+    }
+    
+    func testPathFindingFromGridWithBadEndNodeShouldFail() async {
+        let imageGrid = Bundle.main.decode(ImageGrid.self, from: .grid)
+        let updatedImageGrid = ImageGrid(grid: imageGrid.grid,
+                                         startPoint: imageGrid.startPoint,
+                                         endPoint: Point(x: 19, y: 19))
+        
+        let path = await imageProcessor.findPathFromImageGrid(updatedImageGrid)
+        
+        XCTAssertNil(path)
     }
 }
 

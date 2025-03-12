@@ -39,4 +39,6 @@ extension Bundle {
 
 enum JSONFile: String {
     case mazes = "mazes.json"
+    case grid = "grid.json"
+    case path = "path.json"
 }
