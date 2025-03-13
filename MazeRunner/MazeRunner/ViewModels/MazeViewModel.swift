@@ -81,12 +81,17 @@ class MazeViewModel {
             imageGenerationStep = .pathFinding
             if let path = await findMazePath(imageGrid: imageGrid) {
                 imageGenerationStep = .generatingImage
+                if let finalImage = await generateSolvedImage(path: path) {
+                    solvedMazeImage = finalImage
+                    imageGenerationStep = .complete
+                } else {
+                    imageGenerationStep = .errored(error: "image_generation_failed")
+                }
             } else {
                 imageGenerationStep = .errored(error: "path_finding_failed")
             }
         } else {
             imageGenerationStep = .errored(error: "image_grid_failed")
-            
         }
     }
     
@@ -100,6 +105,14 @@ class MazeViewModel {
     
     private func findMazePath(imageGrid: ImageGrid) async -> [Point]? {
         return await imageProcessor.findPathFromImageGrid(imageGrid)
+    }
+    
+    private func generateSolvedImage(path: [Point]) async -> UIImage? {
+        guard let image = selectedMaze?.image else {
+            return nil
+        }
+        
+        return await imageProcessor.generateSolvedImage(from: image, with: path)
     }
 }
 

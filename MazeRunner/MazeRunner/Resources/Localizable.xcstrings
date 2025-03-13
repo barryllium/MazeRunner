@@ -51,6 +51,9 @@
         }
       }
     },
+    "image_generation_failed" : {
+
+    },
     "image_grid_failed" : {
       "localizations" : {
         "en" : {

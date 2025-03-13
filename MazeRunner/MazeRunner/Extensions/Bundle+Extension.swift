@@ -41,4 +41,5 @@ enum JSONFile: String {
     case mazes = "mazes.json"
     case grid = "grid.json"
     case path = "path.json"
+    case imageData = "imageData.json"
 }

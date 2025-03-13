@@ -72,5 +72,29 @@ final class ImageProcessingTests: XCTestCase {
         
         XCTAssertNil(path)
     }
+    
+    func testSolvedImageGeneration() async {
+        let image = UIImage(named: "testMaze")!
+        let path = Bundle.main.decode([Point].self, from: .path)
+        let expectedDataString = Bundle.main.decode(String.self, from: .imageData)
+        
+        let finalImage = await imageProcessor.generateSolvedImage(from: image, with: path)
+        
+        XCTAssertNotNil(finalImage)
+        
+        let dataString = finalImage!.pngData()!.base64EncodedString()
+        
+        XCTAssertEqual(dataString, expectedDataString)
+    }
+    
+    func testSolvedImageGenerationShouldFailWithInvalidPath() async {
+        let image = UIImage(named: "testMaze")!
+        var path = Bundle.main.decode([Point].self, from: .path)
+        path.append(Point(x: 100, y: 100))
+        
+        let finalImage = await imageProcessor.generateSolvedImage(from: image, with: path)
+        
+        XCTAssertNil(finalImage)
+    }
 }
 

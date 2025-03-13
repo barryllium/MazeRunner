@@ -122,4 +122,34 @@ actor ImageProcessor {
         // No solution was found, return nil
         return nil
     }
+    
+    // MARK: - Solved Image Generation
+    func generateSolvedImage(from inputImage: UIImage, with path: [Point]) -> UIImage? {
+        let imageRect = CGRect(x: 0, y: 0, width: inputImage.size.width, height: inputImage.size.height)
+        
+        // Check that all points exist within the image rect
+        for point in path {
+            if !imageRect.contains(CGPoint(x: point.x, y: point.y)) {
+                return nil
+            }
+        }
+        
+        let imageRenderer = UIGraphicsImageRenderer(size: inputImage.size)
+        let greenColor = UIColor(red: 0, green: 1, blue: 0, alpha: 1)
+        
+        // Draw the final image
+        let finalImage = imageRenderer.image { context in
+            // Set the original image as the base of the image
+            inputImage.draw(in: imageRect)
+            
+            // Overlay a green pixel for every point in the path
+            for point in path {
+                let imagePoint = CGRect(x: point.x, y: point.y, width: 1, height: 1)
+                greenColor.setFill()
+                context.fill(imagePoint)
+            }
+        }
+        
+        return finalImage
+    }
 }

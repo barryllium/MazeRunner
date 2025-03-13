@@ -25,6 +25,7 @@ struct MazeDetailView: View {
                 ScrollView([.horizontal, .vertical], showsIndicators: false) {
                     Image(uiImage: solvedMazeImage)
                         .resizable()
+                        .scaledToFit()
                         .frame(width: maxSize, height: maxSize)
                         .scaleEffect(self.scale)
                         .frame(

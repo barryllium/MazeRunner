@@ -103,4 +103,32 @@ final class MazeRunnerTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedMaze, viewModel.mazes[0])
         XCTAssertEqual(viewModel.imageGenerationStep, .initializing)
     }
+    
+    func testSuccessfulMazeSolving() async {
+        var maze = Maze(name: "Test Maze", description: "test maze", urlString: "")
+        let image = UIImage(named: "testMaze")!
+        maze.imageData = image.pngData()
+        
+        viewModel.mazes = [maze]
+        viewModel.setSelectedMaze(maze)
+        
+        await viewModel.solveMaze()
+        
+        XCTAssertNotNil(viewModel.solvedMazeImage)
+        XCTAssertEqual(viewModel.imageGenerationStep, .complete)
+    }
+    
+    func testFailedMazeSolving() async {
+        var maze = Maze(name: "Test Maze", description: "test maze", urlString: "")
+        let image = UIImage(named: "testMazeNoEnd")!
+        maze.imageData = image.pngData()
+        
+        viewModel.mazes = [maze]
+        viewModel.setSelectedMaze(maze)
+        
+        await viewModel.solveMaze()
+        
+        XCTAssertNil(viewModel.solvedMazeImage)
+        XCTAssertTrue(viewModel.imageGenerationStep.isError)
+    }
 }

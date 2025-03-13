@@ -34,6 +34,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				JSON/grid.json,
+				JSON/imageData.json,
 				JSON/mazes.json,
 				JSON/path.json,
 			);
