@@ -30,6 +30,8 @@ class MazeViewModel {
         imageGenerationStep = .initializing
     }
     
+    private var imageProcessingTask: Task<UIImage?, Never>?
+    
     // MARK: - Fetch network data
     func fetchMazes() async {
         guard let url = MazeList.fetchUrl else {
@@ -77,22 +79,45 @@ class MazeViewModel {
     
     // MARK: - Maze Solving
     func solveMaze() async {
-        imageGenerationStep = .generatingImage
-        if let imageGrid = await createImageGrid() {
-            imageGenerationStep = .pathFinding
-            if let path = await findMazePath(imageGrid: imageGrid) {
-                imageGenerationStep = .generatingImage
-                if let finalImage = await generateSolvedImage(path: path) {
-                    solvedMazeImage = finalImage
-                    imageGenerationStep = .complete
-                } else {
-                    imageGenerationStep = .errored(error: "image_generation_failed")
-                }
-            } else {
-                imageGenerationStep = .errored(error: "path_finding_failed")
+        imageProcessingTask?.cancel()
+        
+        imageProcessingTask = Task {
+            imageGenerationStep = .generatingImageGrid
+            guard let imageGrid = await createImageGrid() else {
+                if Task.isCancelled { return nil }
+                
+                imageGenerationStep = .errored(error: "image_grid_failed")
+                return nil
             }
-        } else {
-            imageGenerationStep = .errored(error: "image_grid_failed")
+            
+            if !Task.isCancelled {
+                imageGenerationStep = .pathFinding
+                guard let path = await findMazePath(imageGrid: imageGrid) else {
+                    if Task.isCancelled { return nil }
+                    
+                    imageGenerationStep = .errored(error: "path_finding_failed")
+                    return nil
+                }
+                
+                if !Task.isCancelled {
+                    imageGenerationStep = .generatingImage
+                    guard let finalImage = await generateSolvedImage(path: path) else {
+                        if Task.isCancelled { return nil }
+                        
+                        imageGenerationStep = .errored(error: "image_generation_failed")
+                        return nil
+                    }
+                    
+                    return finalImage
+                }
+            }
+            
+            return nil
+        }
+        
+        if let finalImage = await imageProcessingTask?.value {
+            solvedMazeImage = finalImage
+            imageGenerationStep = .complete
         }
     }
     

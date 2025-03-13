@@ -8,6 +8,7 @@
 import XCTest
 @testable import MazeRunner
 
+@MainActor
 final class MazeRunnerTests: XCTestCase {
     var viewModel: MazeViewModel!
     
