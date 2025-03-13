@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@MainActor
 @Observable
 class MazeViewModel {
     var apiClient: APIClientProtocol = APIClient.default

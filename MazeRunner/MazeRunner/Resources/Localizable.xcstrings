@@ -52,7 +52,14 @@
       }
     },
     "image_generation_failed" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There was an error generating the solved maze image, please try again."
+          }
+        }
+      }
     },
     "image_grid_failed" : {
       "localizations" : {

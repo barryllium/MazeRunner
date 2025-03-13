@@ -50,6 +50,8 @@ struct MazeDetailView: View {
         } else {
             VStack(alignment: .center, spacing: 8) {
                 Text("solving_maze")
+                    .font(.title2)
+                    .fontWeight(.bold)
                 
                 HStack(alignment: .center, spacing: 8) {
                     if !mazeViewModel.imageGenerationStep.isError {
@@ -57,9 +59,10 @@ struct MazeDetailView: View {
                     }
                     
                     Text(mazeViewModel.imageGenerationStep.label)
+                        .font(.subheadline)
                 }
             }
-            .font(.headline)
+            .padding(.horizontal, 16)
             .task {
                 await mazeViewModel.solveMaze()
             }
@@ -68,6 +71,5 @@ struct MazeDetailView: View {
 }
 
 #Preview {
-    let viewModel = MazeViewModel()
     MazeDetailView(mazeViewModel: MazeViewModel())
 }
